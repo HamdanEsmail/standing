@@ -274,3 +274,11 @@ What changed from the plan (`docs/plans/2026-11-03-standing-core.md`) while buil
 | 2026-11-10 07:34 | One public check from the live site, timed for the demo video: Companies House SC702856 by number (Fetch record page + screenshot) | Dissolved, with its screenshot. The result page arrived 17.7 s after the press: Fetch was back at 1.2 s, the Browser session was open at 2.1 s and the photograph was stored by 17.0 s. The ledger's Browser row is written when the session opens, so it does not show how long the photograph takes | $0.002 |
 
 Total so far: about $2.66 (deploy day and the site work; everything before 9 Nov was free)
+
+## A running check says how long it takes, 10 November
+
+A check that needs a real browser takes a minute or two, and its page said only "Reading the register
+now". A visitor who is not told how long that takes reads a working check as a stuck one. The page now
+says that a real browser takes a minute or two and how many seconds or minutes ago the check was started,
+and a check waiting for the one browser says each search takes a minute or two and that the page
+refreshes by itself. Live as version `967f2a6a` at 12:12 UTC.
