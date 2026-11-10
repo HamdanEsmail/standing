@@ -665,3 +665,30 @@ footer .meter .num { font-family: var(--num); font-variant-numeric: tabular-nums
   .table.services td:nth-child(2) { grid-column: 1 / -1; grid-row: 2; }
   .table.services td.num { padding-left: 0; font-size: 17px; }
 }
+
+/* Waiting: what a visitor watches while a check runs. The three steps with the one it is on, a bar that
+   keeps moving, and a clock. A pressed button says what it is doing and cannot be pressed twice. */
+.waiting { margin-top: 26px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, .22); max-width: 640px; }
+.steps { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 24px; font: 500 14.5px/1.3 var(--body); color: var(--tone-soft); }
+.steps li { display: flex; align-items: center; gap: 9px; }
+.steps li::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px currentColor; }
+.steps li.done { color: #fff; }
+.steps li.done::before { content: "✓"; width: auto; height: auto; border-radius: 0; box-shadow: none; font: 700 13px/1 var(--body); }
+.steps li[aria-current="step"] { color: #fff; font-weight: 600; }
+.steps li[aria-current="step"]::before { background: #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, .28); }
+.bar { position: relative; height: 6px; margin-top: 16px; border-radius: 3px; background: rgba(255, 255, 255, .22); overflow: hidden; }
+.bar::after { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 38%; border-radius: 3px; background: #fff; }
+.wait-clock { margin-top: 12px; font: 400 14.5px/1.4 var(--body); color: var(--tone-soft); }
+.wait-clock .clock { font: 500 15px/1 var(--num); color: #fff; font-variant-numeric: tabular-nums; }
+form[aria-busy="true"] button[aria-disabled="true"] { cursor: progress; pointer-events: none; opacity: .88; }
+form[aria-busy="true"] button[aria-disabled="true"]::after { content: ""; display: inline-block; width: .85em; height: .85em; margin-left: .6em; vertical-align: -.1em; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; }
+@media (prefers-reduced-motion: no-preference) {
+  .bar::after { animation: bar-run 1.6s var(--ease) infinite; }
+  @keyframes bar-run { from { transform: translateX(-100%); } to { transform: translateX(265%); } }
+  .steps li[aria-current="step"]::before { animation: step-now 1.4s var(--ease) infinite; }
+  @keyframes step-now { 50% { box-shadow: 0 0 0 8px rgba(255, 255, 255, 0); } }
+  form[aria-busy="true"] button[aria-disabled="true"]::after { animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+}
+/* With motion turned off the bar stands still as a faint full track; the clock still counts. */
+@media (prefers-reduced-motion: reduce) { .bar::after { width: 100%; opacity: .45; } }

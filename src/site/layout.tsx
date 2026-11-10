@@ -78,6 +78,7 @@ export function Layout(props: {
           <link rel="preload" href="/assets/fonts/geist-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
           <link rel="stylesheet" href="/assets/tokens.css" />
           <link rel="stylesheet" href="/assets/site.css" />
+          <script src="/assets/wait.js" defer></script>
           <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         </head>
         <body class={props.bodyClass}>

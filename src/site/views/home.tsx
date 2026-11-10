@@ -131,7 +131,7 @@ function CheckForm(props: { form?: FormState }) {
       </p>
       <div class="go">
         <span class="note">{FORM_NOTE}</span>
-        <button class="btn" type="submit">
+        <button class="btn" type="submit" data-busy="Reading the register…">
           Check the register
         </button>
       </div>

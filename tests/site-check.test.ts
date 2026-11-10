@@ -7,7 +7,7 @@ import { PUBLIC_CHECKS_PER_IP_PER_DAY } from "../src/core/limits";
 import { insertCheck } from "../src/db/checks";
 import { insertWatch } from "../src/db/watches";
 import { companiesHouse } from "../src/registries/companies-house";
-import { runningLine } from "../src/site/format";
+import { runningLine, waitClock } from "../src/site/format";
 import chCompany from "./fixtures/registries/ch-company.md?raw";
 import fetchChSearch from "./fixtures/tinyfish/fetch-ch-search.json";
 import { callWorker } from "./helpers/app";
@@ -156,13 +156,19 @@ describe("site check flow", () => {
     mockStartRun("run-site-pending");
     const { id, html } = await check({ q: "Ada Fictitious", number: "", record_type: "doctor", place: "GB" });
     expect(callsTo("POST", RUN_ASYNC_API)).toHaveLength(1);
-    expect(textOf(html)).toMatch(
-      /Reading the register now\. In a real browser that takes a minute or two, and this check was started \d+ seconds? ago\. This page refreshes by itself\./,
-    );
+    expect(textOf(html)).toContain("Reading the register now. In a real browser that takes a minute or two. This page refreshes by itself.");
+    // What a visitor sees while waiting: the three steps with the one it is on, a moving bar, and a clock that counts.
+    expect(html).toMatch(/<ol class="steps"[^>]*><li class="done">Wait for a free browser<\/li><li aria-current="step">Read the register<\/li><li>Show its answer<\/li><\/ol>/);
+    expect(html).toMatch(/<div class="bar" role="progressbar" aria-label="Reading the register"><\/div>/);
+    expect(html).toMatch(/<span class="clock" data-since="\d{4}-\d{2}-\d{2}T[\d:.]+Z">0:0\d<\/span> so far/);
+    expect(html).toContain('<script src="/assets/wait.js" defer=""></script>');
     expect(refreshOf(html)).toBe(`3; url=/checks/${id}?w=1`);
     expect(refreshOf(await page(`/checks/${id}?w=59`))).toBe(`3; url=/checks/${id}?w=60`);
     const stopped = await page(`/checks/${id}?w=60`);
     expect(refreshOf(stopped)).toBeNull();
+    // A page that has stopped reloading shows no moving bar and no counting clock.
+    expect(stopped).not.toContain('class="bar"');
+    expect(stopped).not.toContain("data-since");
     expect(textOf(stopped)).toContain("Still waiting. The register has not answered yet.");
     expect(stopped).toMatch(new RegExp(`<a[^>]*href="/checks/${id}"[^>]*>Look again</a>`));
     // A junk counter starts again from 0.
@@ -176,24 +182,24 @@ describe("site check flow", () => {
     expect(textOf(html)).toContain(
       "Waiting for a free browser. One register search runs at a time, and each takes a minute or two. This page refreshes by itself.",
     );
+    expect(html).toMatch(/<ol class="steps"[^>]*><li aria-current="step">Wait for a free browser<\/li><li>Read the register<\/li><li>Show its answer<\/li><\/ol>/);
+    expect(html).toMatch(/<div class="bar" role="progressbar" aria-label="Waiting for a free browser"><\/div>/);
     expect(refreshOf(html)).toBe(`3; url=/checks/${id}?w=1`);
   });
 
   it("a running check says how long it takes and how long ago it was started", async () => {
     const now = new Date("2026-11-10T12:00:00.000Z");
     const at = (secondsAgo: number) => new Date(now.getTime() - secondsAgo * 1000).toISOString();
-    expect(runningLine("agent", at(40), now)).toBe(
-      "Reading the register now. In a real browser that takes a minute or two, and this check was started 40 seconds ago. This page refreshes by itself.",
-    );
-    expect(runningLine("agent", at(1), now)).toContain("started 1 second ago.");
-    expect(runningLine("agent", at(75), now)).toContain("started 1 minute ago.");
-    expect(runningLine("agent", at(150), now)).toContain("started 2 minutes ago.");
-    expect(runningLine("fetch", at(3), now)).toBe(
-      "Reading the register now. That takes a few seconds, and this check was started 3 seconds ago. This page refreshes by itself.",
-    );
-    // A check with no start time, or a clock that disagrees, never says a negative time.
-    expect(runningLine("agent", null, now)).toBe("Reading the register now. In a real browser that takes a minute or two. This page refreshes by itself.");
-    expect(runningLine("agent", at(-30), now)).toContain("started 0 seconds ago.");
+    expect(runningLine("agent")).toBe("Reading the register now. In a real browser that takes a minute or two. This page refreshes by itself.");
+    expect(runningLine("fetch")).toBe("Reading the register now. That takes a few seconds. This page refreshes by itself.");
+    expect(runningLine(null)).toBe("Reading the register now. That takes a few seconds. This page refreshes by itself.");
+    // The clock: minutes and seconds since the check was started, never negative, nothing without a start.
+    expect(waitClock(at(47), now)).toBe("0:47");
+    expect(waitClock(at(5), now)).toBe("0:05");
+    expect(waitClock(at(135), now)).toBe("2:15");
+    expect(waitClock(at(-30), now)).toBe("0:00");
+    expect(waitClock(null, now)).toBeNull();
+    expect(waitClock("not a time", now)).toBeNull();
   });
 
   it("invalid input re-renders the home form with a field error, status 400", async () => {

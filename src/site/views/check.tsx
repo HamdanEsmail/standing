@@ -28,6 +28,7 @@ import {
   runningLine,
   STATUS_WORD,
   STILL_WAITING,
+  waitClock,
   WAITING_FOR_SLOT,
 } from "../format";
 import { Layout } from "../layout";
@@ -282,6 +283,38 @@ function ErrorView(props: { check: CheckRow; record: RecordResult & { error: str
   );
 }
 
+const WAIT_STEPS = ["Wait for a free browser", "Read the register", "Show its answer"] as const;
+
+/**
+ * What a visitor watches while a check runs: the three steps with the one it is on, a bar that keeps
+ * moving, and a clock. The bar has no length to show (a register answers when it answers), so it only
+ * says "working"; the clock and the usual time say how long.
+ */
+function Waiting(props: { queued: boolean; startedAt: string | null }) {
+  const at = props.queued ? 0 : 1;
+  const clock = waitClock(props.startedAt, new Date());
+  return (
+    <div class="waiting">
+      <ol class="steps" aria-label="Progress">
+        {WAIT_STEPS.map((step, i) => (
+          <li class={i < at ? "done" : undefined} aria-current={i === at ? "step" : undefined}>
+            {step}
+          </li>
+        ))}
+      </ol>
+      <div class="bar" role="progressbar" aria-label={props.queued ? "Waiting for a free browser" : "Reading the register"}></div>
+      {clock !== null && props.startedAt !== null ? (
+        <p class="wait-clock">
+          <span class="clock" data-since={props.startedAt}>
+            {clock}
+          </span>{" "}
+          so far. A real browser usually takes 1 to 2 minutes.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 function PendingViewScreen(props: { check: CheckRow; pending: PendingView; wait: number }) {
   const { check, pending, wait } = props;
   const name = registryName(check);
@@ -304,7 +337,10 @@ function PendingViewScreen(props: { check: CheckRow; pending: PendingView; wait:
             {STILL_WAITING} <a href={`/checks/${check.id}`}>Look again</a>
           </p>
         ) : (
-          <p class="result-line">{pending.queued ? WAITING_FOR_SLOT : runningLine(check.method, check.started_at, new Date())}</p>
+          <>
+            <p class="result-line">{pending.queued ? WAITING_FOR_SLOT : runningLine(check.method)}</p>
+            <Waiting queued={pending.queued} startedAt={check.started_at} />
+          </>
         )}
       </Slab>
       <div class="below">

@@ -35,6 +35,15 @@ describe("site home", () => {
     expect(html).toContain('value="Publix Asset Management Company"');
   });
 
+  it("the check button says what it is doing once pressed, and every page carries the script that shows it", async () => {
+    const html = await home();
+    expect(html).toMatch(/<button class="btn" type="submit" data-busy="Reading the register…">\s*Check the register\s*<\/button>/);
+    for (const path of ["/", "/coverage", "/watchlist", "/about", "/api"]) {
+      const page = await (await callWorker(path)).text();
+      expect(page, path).toContain('<script src="/assets/wait.js" defer=""></script>');
+    }
+  });
+
   it("on a fresh deploy with nothing watched, the page opens with the form and no record card", async () => {
     const html = await home();
     expect(html).not.toContain('class="record');

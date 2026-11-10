@@ -116,22 +116,24 @@ export const SCREENSHOT_MISSING = "Screenshot unavailable.";
 export const WAITING_FOR_SLOT =
   "Waiting for a free browser. One register search runs at a time, and each takes a minute or two. This page refreshes by itself.";
 
-/** How long ago a check was started: seconds under a minute, then whole minutes. Never negative. */
-function startedAgo(startedAt: string, now: Date): string {
-  const seconds = Math.max(0, Math.floor((now.getTime() - Date.parse(startedAt)) / 1000));
-  if (seconds < 60) return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
-  const minutes = Math.floor(seconds / 60);
-  return minutes === 1 ? "1 minute ago" : `${minutes} minutes ago`;
+/**
+ * What a running check says: what is happening and how long it takes. A visitor who is not told how
+ * long a real browser takes reads a working check as a stuck one.
+ */
+export function runningLine(method: string | null): string {
+  const takes = method === "agent" ? "In a real browser that takes a minute or two" : "That takes a few seconds";
+  return `Reading the register now. ${takes}. This page refreshes by itself.`;
 }
 
 /**
- * What a running check says: what is happening, how long it takes, and how long it has been going.
- * A visitor who is not told how long a real browser takes reads a working check as a stuck one.
+ * The waiting page's clock: minutes and seconds since the check was started, as "0:47". Never negative;
+ * null when the check has no start time. The page's script counts it on between reloads.
  */
-export function runningLine(method: string | null, startedAt: string | null, now: Date): string {
-  const takes = method === "agent" ? "In a real browser that takes a minute or two" : "That takes a few seconds";
-  const since = startedAt === null ? "" : `, and this check was started ${startedAgo(startedAt, now)}`;
-  return `Reading the register now. ${takes}${since}. This page refreshes by itself.`;
+export function waitClock(startedAt: string | null, now: Date): string | null {
+  const at = startedAt === null ? NaN : Date.parse(startedAt);
+  if (Number.isNaN(at)) return null;
+  const seconds = Math.max(0, Math.floor((now.getTime() - at) / 1000));
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
 }
 export const STILL_WAITING = "Still waiting. The register has not answered yet.";
 export const SPEND_PAUSED_LINE = `Live checks are paused: Standing has reached its spending line of $${SPEND_PAUSE_USD}. Stored results and watched records are still shown.`;
