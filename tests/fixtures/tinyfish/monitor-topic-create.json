@@ -1,0 +1,28 @@
+{
+  "monitor": {
+    "id": "7bd84544-721f-4f3f-acb9-ae84f4ffb4c7",
+    "name": "spike-standing-topic",
+    "type": "search",
+    "config": {
+      "query": "\"Christopher Wickfold\" GMC tribunal OR sanction OR suspended",
+      "recency_minutes": 1440,
+      "result_limit": 5
+    },
+    "schedule_cron": "41 5,17 * * *",
+    "status": "active",
+    "last_error": null,
+    "webhook_url": null,
+    "created_at": "2026-11-03 10:14:07",
+    "updated_at": "2026-11-03 10:14:07"
+  },
+  "run": {
+    "id": "fc981aa5-3173-493b-8f99-df05457e7e4a",
+    "request_id": "search-monitor:7bd84544-721f-4f3f-acb9-ae84f4ffb4c7:run:74c35306-1199-4f26-994c-9fc572f0f7c1",
+    "query": "\"Christopher Wickfold\" GMC tribunal OR sanction OR suspended",
+    "status_code": 200,
+    "result_count": 0,
+    "results": [],
+    "new_result_positions": [],
+    "created_at": "2026-11-03 10:14:09"
+  }
+}

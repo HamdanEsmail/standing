@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /checks/
+Disallow: /records/

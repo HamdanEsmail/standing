@@ -1,0 +1,25 @@
+{
+  "results": [],
+  "errors": [
+    {
+      "url": "https://www.gmc-uk.org/registrants/9662428",
+      "error": "selector_not_matched",
+      "unmatched_selectors": [
+        "main"
+      ],
+      "candidate_selectors": [
+        "article",
+        "[role='main']",
+        "section",
+        "nav",
+        "header",
+        "#mainGMC",
+        "#cookieBanner",
+        "#globalHeader",
+        "#headerMenu",
+        "#headerNavigation"
+      ]
+    }
+  ],
+  "request_id": "60469e0a-2e35-4161-8288-685fbf681f47"
+}

@@ -1,0 +1,181 @@
+{
+  "run_id": "731cf9fe-4905-48b0-82ab-9e9b59af27ec",
+  "status": "COMPLETED",
+  "goal": "Navigate to https://www.gmc-uk.org/registration-and-licensing/the-medical-register to complete the goal: Use the 'Search the register' function on this page to search the GMC medical register for the doctor named 'Rachael Rebecca Bickfold'. If a results list appears, report how many results there are. If exactly one result matches that name, open it and return the full name, GMC reference number, the registration status line, the entry URL, and the text of any conditions, undertakings, suspension or 'registrant history' section shown. If zero or several results, do not open any entry; return results_found and the list of names shown (up to 10). If a block page or CAPTCHA appears, return blocked=true.",
+  "created_at": "2026-11-03T10:17:02Z",
+  "started_at": "2026-11-03T10:17:06Z",
+  "finished_at": "2026-11-03T10:18:09Z",
+  "num_of_steps": 11,
+  "result": {
+    "status": "Registered with a licence to practise",
+    "blocked": false,
+    "entry_url": "https://www.gmc-uk.org/registrants/9662428",
+    "full_name": "Rachael Rebecca BICKFOLD",
+    "gmc_number": "9662428",
+    "names_shown": [
+      "Rachael Rebecca Bickfold"
+    ],
+    "results_found": 1,
+    "sanctions_text": "This registrant has conditions (details available in history tab)"
+  },
+  "output_schema": {
+    "type": "object",
+    "required": [
+      "blocked"
+    ],
+    "properties": {
+      "status": {
+        "type": "string",
+        "nullable": true
+      },
+      "blocked": {
+        "type": "boolean"
+      },
+      "entry_url": {
+        "type": "string",
+        "nullable": true
+      },
+      "full_name": {
+        "type": "string",
+        "nullable": true
+      },
+      "gmc_number": {
+        "type": "string",
+        "nullable": true
+      },
+      "names_shown": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "results_found": {
+        "type": "integer",
+        "nullable": true
+      },
+      "sanctions_text": {
+        "type": "string",
+        "nullable": true
+      }
+    }
+  },
+  "profile_attached": false,
+  "profile_id": null,
+  "error": null,
+  "streaming_url": "https://ip-18-144-208-230.tetra-data.production.tinyfish.io/tf-35c32833-1117-488a-9d05-896fc5eeb233/stream/0",
+  "browser_config": {
+    "proxy_enabled": false,
+    "proxy_country_code": null
+  },
+  "video_url": null,
+  "steps": [
+    {
+      "id": "95197471-9a33-4263-93cc-93342d8a8f45",
+      "timestamp": "2026-11-03T10:17:06Z",
+      "status": "RUNNING",
+      "action": "Navigate to GMC medical register page",
+      "screenshot": null,
+      "html": null,
+      "duration": "4.5s"
+    },
+    {
+      "id": "6a716147-2ce9-4b66-9e72-c7510dc898b7",
+      "timestamp": "2026-11-03T10:17:13Z",
+      "status": "RUNNING",
+      "action": "Click to open the register search function",
+      "screenshot": null,
+      "html": null,
+      "duration": "3.4s"
+    },
+    {
+      "id": "32208ebf-b209-4377-ac5b-1907862a00c5",
+      "timestamp": "2026-11-03T10:17:18Z",
+      "status": "RUNNING",
+      "action": "Accept cookies to dismiss banner",
+      "screenshot": null,
+      "html": null,
+      "duration": "1.6s"
+    },
+    {
+      "id": "cefe397d-c941-44ca-8fdf-d6e5298c8f5a",
+      "timestamp": "2026-11-03T10:17:21Z",
+      "status": "RUNNING",
+      "action": "Click to open the register search",
+      "screenshot": null,
+      "html": null,
+      "duration": "1.3s"
+    },
+    {
+      "id": "7f516cd5-1201-4424-bed0-f36142428157",
+      "timestamp": "2026-11-03T10:17:25Z",
+      "status": "RUNNING",
+      "action": "Enter the doctor name to search",
+      "screenshot": null,
+      "html": null,
+      "duration": "1.2s"
+    },
+    {
+      "id": "cc74fe0f-ea05-4268-89d7-7941a22bdcfe",
+      "timestamp": "2026-11-03T10:17:28Z",
+      "status": "RUNNING",
+      "action": "Submit the search for the doctor",
+      "screenshot": null,
+      "html": null,
+      "duration": "6.2s"
+    },
+    {
+      "id": "bbc7f4f0-b4d0-409a-88f8-d84816d81b48",
+      "timestamp": "2026-11-03T10:17:37Z",
+      "status": "RUNNING",
+      "action": "Get search results for the doctor query",
+      "screenshot": null,
+      "html": null,
+      "duration": "2.3s"
+    },
+    {
+      "id": "24893430-5db8-4002-8842-a2f44b00ddbb",
+      "timestamp": "2026-11-03T10:17:41Z",
+      "status": "RUNNING",
+      "action": "Search with just last name Bickfold",
+      "screenshot": null,
+      "html": null,
+      "duration": "8.3s"
+    },
+    {
+      "id": "a92f049e-c55b-4580-9f8c-7106e1e8c7c4",
+      "timestamp": "2026-11-03T10:17:51Z",
+      "status": "RUNNING",
+      "action": "Open the single matching doctor's entry",
+      "screenshot": null,
+      "html": null,
+      "duration": "3.4s"
+    },
+    {
+      "id": "cf8ff309-4977-4c4b-9256-f40a5d82c88c",
+      "timestamp": "2026-11-03T10:17:56Z",
+      "status": "RUNNING",
+      "action": "Extract doctor details from the entry page",
+      "screenshot": null,
+      "html": null,
+      "duration": "3.0s"
+    },
+    {
+      "id": "9968bfd0-11eb-49e4-81c7-6614f6e36cb0",
+      "timestamp": "2026-11-03T10:18:06Z",
+      "status": "RUNNING",
+      "action": "Return search results and doctor details",
+      "screenshot": null,
+      "html": null,
+      "duration": "0.1s"
+    },
+    {
+      "id": "e1796590-6be5-4979-8922-2f78de9aae33",
+      "timestamp": "2026-11-03T10:18:09Z",
+      "status": "COMPLETED",
+      "action": "Task completed",
+      "screenshot": null,
+      "html": null,
+      "duration": null
+    }
+  ]
+}

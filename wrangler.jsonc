@@ -1,0 +1,39 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "standing",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "standing",
+      "database_id": "4577c7f5-39e3-438e-b0c3-636ddfe2ac2d",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "STORE",
+      "bucket_name": "standing"
+    }
+  ],
+  "triggers": {
+    "crons": ["15 * * * *"]
+  },
+  "vars": {
+    "PUBLIC_BASE_URL": "https://standing.hamdanesmail12-7a9.workers.dev",
+    // The site's screens (src/site) answer only when this is "1". Off, every site path answers as
+    // the Worker did before the site existed. Set to "1" to put the site live.
+    "SITE_ENABLED": "1",
+    // The public source repository. The About page links it when this is set.
+    "REPO_URL": "https://github.com/HamdanEsmail/standing"
+  },
+  // Styles, fonts and icons, served before the Worker runs. No .html file lives here.
+  "assets": { "directory": "./public" },
+  "preview_urls": true,
+  // This version's id stamps the stored copies of the site's screens, so a deploy starts a fresh set.
+  "version_metadata": { "binding": "CF_VERSION_METADATA" },
+  "observability": {
+    "enabled": true
+  }
+}

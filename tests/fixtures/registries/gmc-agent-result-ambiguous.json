@@ -1,0 +1,27 @@
+{
+  "_note": "hand-built from the spike's documented result (results_found 2, neither opened); replace with a real recording when Agent calls are cleared",
+  "blocked": false,
+  "results_found": 2,
+  "variants_tried": [
+    "syeda sickfold"
+  ],
+  "rows": [
+    {
+      "name": "Syeda Varisha Amira SICKFOLD",
+      "number": null,
+      "status": "Registered with a licence to practise",
+      "specialty": null
+    },
+    {
+      "name": "Syeda Humaira SICKFOLD",
+      "number": null,
+      "status": "Registered without a licence to practise",
+      "specialty": null
+    }
+  ],
+  "full_name": null,
+  "gmc_number": null,
+  "status": null,
+  "entry_url": null,
+  "sanctions_text": null
+}

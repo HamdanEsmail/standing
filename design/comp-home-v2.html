@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Standing: home, second look (for review)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --page: #edf0ed; --page-2: #e2e7e3; --slab: #ffffff; --well: #edf0ed;
+    --ink: #0d1512; --ink-2: #36413c; --ink-3: #66726c; --ink-4: #98a39d;
+    --go: #0f5c43; --go-deep: #0a4533; --go-tint: #cfe3da; --wait: #94660f; --stop: #8c2c2c; --hold: #55615b;
+    --display: "Bricolage Grotesque", system-ui, sans-serif; --body: "Geist", system-ui, sans-serif; --num: "Geist Mono", ui-monospace, monospace;
+    --r-slab: 26px; --r-in: 14px; --r-btn: 12px;
+    --shadow: 0 1px 1px rgba(13, 49, 37, .05), 0 12px 32px -12px rgba(13, 49, 37, .22);
+    --ease: cubic-bezier(.2, .7, .2, 1);
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html { background: var(--page); color: var(--ink); font: 400 16px/1.55 var(--body); -webkit-font-smoothing: antialiased; }
+  body { margin: 0; }
+  body::before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .5; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  a { color: inherit; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 0 40px; position: relative; }
+  .num { font-family: var(--num); font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+
+  /* Top */
+  .top { display: flex; align-items: center; justify-content: space-between; padding: 26px 0 0; }
+  .mark { font: 700 24px/1 var(--display); letter-spacing: -.03em; display: flex; align-items: center; gap: 10px; }
+  .mark i { width: 11px; height: 11px; border-radius: 50%; background: var(--go); box-shadow: 0 0 0 5px var(--go-tint); }
+  nav { display: flex; gap: 6px; background: var(--slab); padding: 6px; border-radius: 14px; box-shadow: var(--shadow); }
+  nav a { font: 500 14px/1 var(--body); text-decoration: none; color: var(--ink-2); padding: 10px 14px; border-radius: 9px; transition: background .2s var(--ease); }
+  nav a:hover { background: var(--well); }
+  nav a.on { background: var(--ink); color: #fff; }
+
+  /* Opening */
+  .opening { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0 28px; padding: 84px 0 0; align-items: start; }
+  .say { grid-column: 1 / span 7; }
+  .eyebrow { font: 500 15px/1 var(--body); color: var(--ink-3); margin-bottom: 22px; }
+  h1 { font: 700 82px/.96 var(--display); letter-spacing: -.03em; margin: 0; text-wrap: balance; }
+  h1 em { font-style: normal; color: var(--go); }
+  .lede { font-size: 19px; line-height: 1.5; color: var(--ink-2); max-width: 30em; margin: 30px 0 34px; text-wrap: pretty; }
+  .ask { background: var(--slab); border-radius: var(--r-slab); padding: 22px; box-shadow: var(--shadow); max-width: 600px; }
+  .ask label { display: block; font: 500 13px/1 var(--body); color: var(--ink-3); margin: 0 0 8px 4px; }
+  .field { width: 100%; font: 500 17px/1 var(--body); color: var(--ink); background: var(--well); border: 0; border-radius: var(--r-in); padding: 16px 16px; outline-offset: 2px; }
+  .field:focus { outline: 2px solid var(--go); }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px; }
+  .go-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 18px; }
+  .go-row small { color: var(--ink-3); font-size: 13.5px; line-height: 1.4; max-width: 24em; }
+  .btn { font: 600 16px/1 var(--body); color: #fff; background: var(--ink); border: 0; border-radius: var(--r-btn); padding: 17px 22px; white-space: nowrap; cursor: pointer; transition: transform .2s var(--ease), background .2s var(--ease); }
+  .btn:hover { background: var(--go-deep); transform: translateY(-1px); } .btn:active { transform: scale(.98); }
+  .try { margin: 18px 0 0 6px; color: var(--ink-3); font-size: 14.5px; }
+  .try a { color: var(--ink); margin-left: 12px; }
+
+  /* The verdict slab: the product itself */
+  .verdict { grid-column: 8 / span 5; margin-top: 8px; position: relative; z-index: 2; background: var(--go); color: #fff; border-radius: 30px; padding: 28px 28px 14px; box-shadow: 0 2px 2px rgba(10, 69, 51, .2), 0 40px 60px -28px rgba(10, 69, 51, .55); }
+  .verdict .where { font: 500 14px/1.3 var(--body); color: #cfe3da; display: flex; justify-content: space-between; }
+  .verdict .word { font: 800 132px/.86 var(--display); letter-spacing: -.04em; margin: 26px 0 0 -4px; }
+  .verdict .says { font-size: 16px; color: #dcebe4; margin-top: 12px; }
+  .verdict .who { font: 600 26px/1.1 var(--display); letter-spacing: -.02em; margin-top: 30px; }
+  .verdict .who span { font: 500 15px/1 var(--num); color: #cfe3da; margin-left: 10px; letter-spacing: 0; }
+  .facts { background: #fff; color: var(--ink); border-radius: 18px; margin: 24px -14px 0; padding: 6px 18px 16px; display: grid; grid-template-columns: 1fr 150px; gap: 0 18px; }
+  .facts dl { margin: 0; }
+  .facts dt { font: 500 12.5px/1 var(--body); color: var(--ink-3); margin-top: 14px; }
+  .facts dd { margin: 5px 0 0; font: 500 15px/1.35 var(--body); }
+  .facts .shot { margin-top: 14px; border-radius: 10px; overflow: hidden; height: 172px; background: var(--well); box-shadow: inset 0 0 0 1px rgba(13, 21, 18, .08); }
+  .facts .shot img { width: 100%; display: block; }
+  .proof { grid-column: 1 / -1; font: 400 12.5px/1.5 var(--num); color: var(--ink-3); margin-top: 14px; }
+  .proof a { color: var(--ink); }
+  .verdict .acts { display: flex; justify-content: space-between; align-items: center; padding: 14px 4px 4px; font-size: 14px; color: #dcebe4; }
+  .verdict .acts a { color: #fff; }
+  .counts { grid-column: 1 / span 7; display: flex; gap: 36px; margin-top: 44px; padding-bottom: 70px; }
+  .counts b { display: block; font: 700 34px/1 var(--display); letter-spacing: -.03em; }
+  .counts span { font-size: 14px; color: var(--ink-3); }
+
+  /* Sections */
+  section { padding: 110px 0 0; }
+  .band { background: var(--page-2); margin-top: 0; padding: 110px 0 110px; }
+  h2 { font: 700 54px/.98 var(--display); letter-spacing: -.04em; margin: 0; text-wrap: balance; }
+  .sub { font-size: 18px; color: var(--ink-2); max-width: 31em; margin-top: 18px; text-wrap: pretty; }
+  .split { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0 28px; align-items: start; }
+
+  .unsure { grid-column: 1 / span 5; }
+  .unsure .tag { display: inline-block; font: 800 44px/.9 var(--display); letter-spacing: -.045em; color: #fff; background: var(--hold); border-radius: 14px; padding: 14px 18px 16px; margin-bottom: 26px; }
+  .rows { grid-column: 7 / span 6; }
+  .row { display: grid; grid-template-columns: 1fr auto; gap: 6px 20px; padding: 20px 0; border-top: 1px solid rgba(13, 21, 18, .12); align-items: center; }
+  .row:first-child { border-top: 0; padding-top: 4px; }
+  .row h3 { margin: 0; font: 600 19px/1.2 var(--display); letter-spacing: -.02em; }
+  .row h3 span { font: 500 13.5px/1 var(--num); color: var(--ink-3); margin-left: 8px; letter-spacing: 0; }
+  .row p { margin: 0; grid-column: 1; color: var(--ink-2); font-size: 14.5px; }
+  .row p.gone { color: var(--stop); }
+  .pick { grid-row: 1 / span 2; grid-column: 2; font: 600 14px/1 var(--body); background: var(--slab); color: var(--ink); border: 0; border-radius: 10px; padding: 12px 14px; box-shadow: var(--shadow); cursor: pointer; transition: transform .2s var(--ease); }
+  .pick:hover { transform: translateY(-1px); }
+  .rows small { display: block; color: var(--ink-3); font-size: 13.5px; margin-top: 16px; }
+
+  .steps-title { grid-column: 1 / span 4; position: sticky; top: 30px; }
+  .steps { grid-column: 6 / span 7; }
+  .step { display: grid; grid-template-columns: 150px 1fr; gap: 0 10px; padding: 0 0 58px; }
+  .step .n { font: 800 128px/.8 var(--display); letter-spacing: -.06em; color: var(--go-tint); }
+  .step h3 { font: 700 28px/1.1 var(--display); letter-spacing: -.03em; margin: 6px 0 10px; }
+  .step p { margin: 0; color: var(--ink-2); font-size: 17px; max-width: 30em; }
+  .step .uses { margin-top: 12px; font-size: 14px; color: var(--ink-3); }
+  .step .uses b { color: var(--go); font-weight: 600; }
+
+  .changes { margin-top: 44px; }
+  .change { display: grid; grid-template-columns: 170px 1.2fr 1fr 150px; gap: 20px; align-items: center; padding: 22px 0; border-top: 1px solid rgba(13, 21, 18, .12); }
+  .change time { font: 400 13.5px/1.3 var(--num); color: var(--ink-3); }
+  .change h3 { margin: 0; font: 600 20px/1.2 var(--display); letter-spacing: -.02em; }
+  .move { display: flex; align-items: center; gap: 10px; }
+  .chip { font: 600 14px/1 var(--body); color: #fff; border-radius: 8px; padding: 8px 10px; }
+  .chip.go { background: var(--go); } .chip.wait { background: var(--wait); } .chip.stop { background: var(--stop); }
+  .move i { color: var(--ink-4); font-style: normal; }
+  .change .via { text-align: right; font-size: 14px; color: var(--ink-3); }
+  .note { font-size: 14px; color: var(--ink-3); margin-top: 18px; }
+
+  .index { display: grid; grid-template-columns: 1fr 1fr; gap: 0 56px; margin-top: 48px; }
+  .reg { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 22px 0; border-top: 1px solid rgba(13, 21, 18, .12); }
+  .reg h3 { margin: 0; font: 700 30px/1.05 var(--display); letter-spacing: -.035em; }
+  .reg span { font-size: 14.5px; color: var(--ink-3); text-align: right; white-space: nowrap; }
+  footer { padding: 90px 0 50px; color: var(--ink-3); font-size: 14px; }
+  @media (prefers-reduced-motion: no-preference) {
+    .say > *, .verdict { animation: rise .7s var(--ease) both; } .say > :nth-child(2) { animation-delay: .06s; } .say > :nth-child(3) { animation-delay: .12s; } .say > :nth-child(4) { animation-delay: .18s; } .verdict { animation-delay: .2s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="mark"><i></i>Standing</div>
+    <nav><a class="on" href="#">Check</a><a href="#">Watchlist</a><a href="#">Coverage</a><a href="#">API</a><a href="#">About</a></nav>
+  </header>
+
+  <div class="opening">
+    <div class="say">
+      <div class="eyebrow">Licence and registry checks</div>
+      <h1>The register's<br>own answer,<br><em>read a minute ago.</em></h1>
+      <p class="lede">Standing looks up a person or a business on the official register, live, and returns one verified record: status, number, dates and history, with the page it came from pinned beside it.</p>
+      <div class="ask">
+        <label for="q">Name or registration number</label>
+        <input class="field" id="q" value="Greggs PLC">
+        <div class="pair">
+          <div><label>Record type</label><select class="field"><option>Company</option></select></div>
+          <div><label>Place</label><select class="field"><option>United Kingdom</option></select></div>
+        </div>
+        <div class="go-row"><small>Some registers answer in seconds. Those that need a real browser can take a minute or two.</small><button class="btn">Check the register</button></div>
+      </div>
+      <p class="try">Try one:<a href="#">a doctor, by number</a><a href="#">Greggs PLC</a><a href="#">a Florida company</a></p>
+    </div>
+
+    <article class="verdict">
+      <div class="where"><span>Companies House · UK</span><span>Read 9 Nov 2026, 08:40 UTC</span></div>
+      <div class="word">Active</div>
+      <div class="says">The register says “Active”</div>
+      <div class="who">GREGGS PLC <span>00502851</span></div>
+      <div class="facts">
+        <dl>
+          <dt>Company type</dt><dd>Public limited Company</dd>
+          <dt>Incorporated on</dt><dd class="num">29 December 1951</dd>
+          <dt>Registered office</dt><dd>Greggs House, Quorum Business Park, Newcastle Upon Tyne, NE12 8BU</dd>
+        </dl>
+        <div class="shot"><img src="comp-assets/ch-greggs.png" alt="The Companies House page for GREGGS PLC"></div>
+        <div class="proof">Companies House · read 9 Nov 2026, 08:40 UTC · Fetch · live · <a href="#">source ↗</a></div>
+      </div>
+      <div class="acts"><span><a href="#">Receipt</a> &nbsp;·&nbsp; <a href="#">Fresh check</a></span><span><a href="#">Watch this record</a></span></div>
+    </article>
+
+    <div class="counts">
+      <div><b>6</b><span>registers</span></div>
+      <div><b>2</b><span>countries</span></div>
+      <div><b>19</b><span>checks run</span></div>
+      <div><b>4</b><span>records watched</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="band">
+  <div class="wrap split">
+    <div class="unsure">
+      <div class="tag">Ambiguous</div>
+      <h2>Several matches? It shows them. It never picks one for you.</h2>
+      <p class="sub">A search for “Greggs” finds 20 companies. Standing gives no status until exactly one record matches the full name, or you choose one.</p>
+    </div>
+    <div class="rows">
+      <div class="row"><h3>GREGGS PLC <span>00502851</span></h3><p>Incorporated on 29 December 1951 · Newcastle Upon Tyne</p><button class="pick">Verify this one</button></div>
+      <div class="row"><h3>GREGGS ACADEMIC SERVICES LTD <span>SC702856</span></h3><p class="gone">Dissolved on 11 August 2026 · Ellon, Scotland</p><button class="pick">Verify this one</button></div>
+      <div class="row"><h3>GREGGS CARGO AND LOGISTICS UK LTD <span>16546851</span></h3><p>Incorporated on 27 June 2025 · Smethwick</p><button class="pick">Verify this one</button></div>
+      <div class="row"><h3>GREGGS CARPENTRY LIMITED <span>09888584</span></h3><p>Incorporated on 25 November 2015 · Brandon</p><button class="pick">Verify this one</button></div>
+      <small>Showing 4 of 20, read 9 Nov 2026. Repeat the check with a number to go straight to one record.</small>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="split">
+    <div class="steps-title"><h2>How a check works</h2><p class="sub">Every answer comes from the register's own page, read when you ask. A stored copy is never passed off as live.</p></div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div><h3>Search the official register</h3><p>By name or by number. Registers with no search address are searched the way a person would, in a real browser.</p><div class="uses">with <b>TinyFish Agent</b> and <b>Fetch</b></div></div></div>
+      <div class="step"><div class="n">2</div><div><h3>One record, or an honest “not sure”</h3><p>The status is read from the record page and put into one fixed set of words. The register's own wording stays beside it, with a screenshot.</p><div class="uses">with <b>TinyFish Fetch</b> and <b>Browser</b></div></div></div>
+      <div class="step"><div class="n">3</div><div><h3>Told when it changes</h3><p>A watched record is re-read whenever TinyFish Monitor reports a change. A new status becomes an event with before and after.</p><div class="uses">with <b>TinyFish Monitor</b></div></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Status changes caught</h2>
+    <p class="sub">Watched records, newest change first. Each row opens the record with both readings of the register.</p>
+    <div class="changes">
+      <div class="change"><time>12 Nov 2026<br>09:14 UTC</time><h3>Example Bakery Ltd</h3><div class="move"><span class="chip go">Active</span><i>→</i><span class="chip stop">Dissolved</span></div><div class="via">Page monitor</div></div>
+      <div class="change"><time>11 Nov 2026<br>21:02 UTC</time><h3>Nurse · NMC 00X0000X</h3><div class="move"><span class="chip stop">Suspended</span><i>→</i><span class="chip wait">Conditions</span></div><div class="via">Topic monitor</div></div>
+    </div>
+    <p class="note">Layout examples only. Nothing has changed yet on the four watched records; the live page says so.</p>
+  </section>
+
+  <section>
+    <h2>Six registers at launch</h2>
+    <p class="sub">Any name on these registers, not a fixed list. Registers that cannot be read are listed too, with the reason.</p>
+    <div class="index">
+      <div class="reg"><h3>General Medical Council</h3><span>UK · doctors</span></div>
+      <div class="reg"><h3>Companies House</h3><span>UK · companies</span></div>
+      <div class="reg"><h3>Nursing and Midwifery Council</h3><span>UK · nurses, midwives</span></div>
+      <div class="reg"><h3>Florida Division of Corporations</h3><span>US · companies</span></div>
+      <div class="reg"><h3>Solicitors Regulation Authority</h3><span>UK · solicitors</span></div>
+      <div class="reg"><h3>California Dept of Consumer Affairs</h3><span>US · licensed professionals</span></div>
+    </div>
+  </section>
+
+  <footer>Second look for review, 9 Nov 2026. The Greggs record, its screenshot and the candidates are real reads of Companies House. The two status-change rows are layout examples.</footer>
+</div>
+</body>
+</html>

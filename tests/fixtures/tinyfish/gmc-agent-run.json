@@ -1,0 +1,150 @@
+{
+  "run_id": "f8907a4d-0c6c-4806-8b52-6d9838c85f03",
+  "status": "COMPLETED",
+  "goal": "Navigate to https://www.gmc-uk.org/registration-and-licensing/the-medical-register to complete the goal: Use the 'Search the register' function on this page to search the GMC medical register for a doctor with surname 'Wickfold' and first name 'Christopher'. If a results list appears, open the first matching entry. Return: the number of results found, and for the opened entry the full name, GMC reference number, registration status (e.g. 'Registered with a licence to practise'), the URL of the entry page, and whether any fitness-to-practise history is shown. If a CAPTCHA or block page appears, return blocked=true with the message shown.",
+  "created_at": "2026-11-03T09:21:39Z",
+  "started_at": "2026-11-03T09:21:42Z",
+  "finished_at": "2026-11-03T09:22:34Z",
+  "num_of_steps": 8,
+  "result": {
+    "status": "Registered with a licence to practise",
+    "blocked": false,
+    "entry_url": "https://www.gmc-uk.org/registrants/9360749",
+    "full_name": "Christopher John Marlow Wickfold",
+    "gmc_number": "9360749",
+    "block_message": "",
+    "results_found": 1,
+    "fitness_to_practise_history": false
+  },
+  "output_schema": {
+    "type": "object",
+    "required": [
+      "blocked"
+    ],
+    "properties": {
+      "status": {
+        "type": "string",
+        "nullable": true
+      },
+      "blocked": {
+        "type": "boolean"
+      },
+      "entry_url": {
+        "type": "string",
+        "nullable": true
+      },
+      "full_name": {
+        "type": "string",
+        "nullable": true
+      },
+      "gmc_number": {
+        "type": "string",
+        "nullable": true
+      },
+      "block_message": {
+        "type": "string",
+        "nullable": true
+      },
+      "results_found": {
+        "type": "integer",
+        "nullable": true
+      },
+      "fitness_to_practise_history": {
+        "type": "boolean",
+        "nullable": true
+      }
+    }
+  },
+  "profile_attached": false,
+  "profile_id": null,
+  "error": null,
+  "streaming_url": "https://ip-13-57-240-101.tetra-data.production.tinyfish.io/tf-e8bdabae-0499-4815-bcdd-d06562615ace/stream/0",
+  "browser_config": {
+    "proxy_enabled": false,
+    "proxy_country_code": null
+  },
+  "video_url": null,
+  "steps": [
+    {
+      "id": "1a13785c-c151-48bc-b0cb-4230615396ab",
+      "timestamp": "2026-11-03T09:21:42Z",
+      "status": "RUNNING",
+      "action": "Navigate to GMC medical register page",
+      "screenshot": "https://agent.tinyfish.ai/runs/f8907a4d-0c6c-4806-8b52-6d9838c85f03/steps/1a13785c-c151-48bc-b0cb-4230615396ab/screenshot",
+      "html": null,
+      "duration": "4.8s"
+    },
+    {
+      "id": "4293bd42-9a72-4df7-8c3f-40d0785afc35",
+      "timestamp": "2026-11-03T09:21:50Z",
+      "status": "RUNNING",
+      "action": "Enter doctor name to search",
+      "screenshot": "https://agent.tinyfish.ai/runs/f8907a4d-0c6c-4806-8b52-6d9838c85f03/steps/4293bd42-9a72-4df7-8c3f-40d0785afc35/screenshot",
+      "html": null,
+      "duration": "1.2s"
+    },
+    {
+      "id": "59e87353-6afb-4f11-9024-4948d5af0968",
+      "timestamp": "2026-11-03T09:21:54Z",
+      "status": "RUNNING",
+      "action": "Execute the search for Christopher Wickfold",
+      "screenshot": "https://agent.tinyfish.ai/runs/f8907a4d-0c6c-4806-8b52-6d9838c85f03/steps/59e87353-6afb-4f11-9024-4948d5af0968/screenshot",
+      "html": null,
+      "duration": "6.6s"
+    },
+    {
+      "id": "c71884cb-5170-45d7-8b66-ffe351ba59e8",
+      "timestamp": "2026-11-03T09:22:03Z",
+      "status": "RUNNING",
+      "action": "Open first matching entry for Christopher Wickfold",
+      "screenshot": "https://agent.tinyfish.ai/runs/f8907a4d-0c6c-4806-8b52-6d9838c85f03/steps/c71884cb-5170-45d7-8b66-ffe351ba59e8/screenshot",
+      "html": null,
+      "duration": "2.5s"
+    },
+    {
+      "id": "76536869-6e99-452d-8f9d-ff34fc28ca3e",
+      "timestamp": "2026-11-03T09:22:15Z",
+      "status": "RUNNING",
+      "action": "Check for fitness-to-practise history on doctor details page",
+      "screenshot": "https://agent.tinyfish.ai/runs/f8907a4d-0c6c-4806-8b52-6d9838c85f03/steps/76536869-6e99-452d-8f9d-ff34fc28ca3e/screenshot",
+      "html": null,
+      "duration": "1.6s"
+    },
+    {
+      "id": "cd97b2ed-5c6b-42d2-a23f-3add8cd9fa16",
+      "timestamp": "2026-11-03T09:22:18Z",
+      "status": "RUNNING",
+      "action": "Go back to search results page to count results",
+      "screenshot": "https://agent.tinyfish.ai/runs/f8907a4d-0c6c-4806-8b52-6d9838c85f03/steps/cd97b2ed-5c6b-42d2-a23f-3add8cd9fa16/screenshot",
+      "html": null,
+      "duration": "1.3s"
+    },
+    {
+      "id": "d340d654-523f-4eca-b448-397904e56b48",
+      "timestamp": "2026-11-03T09:22:23Z",
+      "status": "RUNNING",
+      "action": "Get number of search results",
+      "screenshot": "https://agent.tinyfish.ai/runs/f8907a4d-0c6c-4806-8b52-6d9838c85f03/steps/d340d654-523f-4eca-b448-397904e56b48/screenshot",
+      "html": null,
+      "duration": "2.6s"
+    },
+    {
+      "id": "418069c9-83e9-44ef-bf6e-7a0598915575",
+      "timestamp": "2026-11-03T09:22:32Z",
+      "status": "RUNNING",
+      "action": "Return search results and entry details for Christopher Wickfold",
+      "screenshot": "https://agent.tinyfish.ai/runs/f8907a4d-0c6c-4806-8b52-6d9838c85f03/steps/418069c9-83e9-44ef-bf6e-7a0598915575/screenshot",
+      "html": null,
+      "duration": "0.1s"
+    },
+    {
+      "id": "d0eba84b-04fe-4a20-a8ba-09716b2def89",
+      "timestamp": "2026-11-03T09:22:34Z",
+      "status": "COMPLETED",
+      "action": "Task completed",
+      "screenshot": null,
+      "html": null,
+      "duration": null
+    }
+  ]
+}

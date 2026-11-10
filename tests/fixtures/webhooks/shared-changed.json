@@ -1,0 +1,22 @@
+{
+  "_note": "hand-built in the shape of a real Page webhook (fetch_monitor_id, id, is_baseline, outcome, a diff that starts with '--- previous' and '+++ current', judgment {purpose, is_relevant, summary, error}, results, errors); replace with a real recording after deploy",
+  "id": "c4d5e6f7-1a2b-4c3d-8e9f-0a1b2c3d4e5f",
+  "fetch_monitor_id": "c3d4e5f6-0000-4000-8000-000000shared",
+  "is_baseline": false,
+  "outcome": "changed",
+  "diff": "--- previous\n+++ current\n@@ -11,1 +11,2 @@\n | **02 Nov** | | | | | | |\n+| JENLOWE,  Simone 22L4964O | Midwife; | NMC, Virtual Hearing  **02 Nov - 02 Nov** | West Suffolk | AgR | N/A | Application granted |\n+| JENLOWE, Peter 99Q9999Q | Adult Nurse; | NMC, Virtual Hearing | Kent | SUB | N/A | |\n",
+  "diff_truncated": false,
+  "judgment": {
+    "purpose": "A new hearing outcome, sanction, decision or notice was published. Ignore dates and layout.",
+    "is_relevant": true,
+    "summary": "A new hearing outcome was published.",
+    "error": null
+  },
+  "results": [
+    {
+      "url": "https://www.nmc.org.uk/concerns-nurses-midwives/hearings/hearings-sanctions/hearings-november-2026/",
+      "text": "(page text omitted in this hand-built fixture)"
+    }
+  ],
+  "errors": []
+}
