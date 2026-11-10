@@ -25,7 +25,7 @@ import {
   PLACE_TEXT,
   RECORD_TYPE_TEXT,
   receiptLine,
-  RUNNING,
+  runningLine,
   STATUS_WORD,
   STILL_WAITING,
   WAITING_FOR_SLOT,
@@ -304,7 +304,7 @@ function PendingViewScreen(props: { check: CheckRow; pending: PendingView; wait:
             {STILL_WAITING} <a href={`/checks/${check.id}`}>Look again</a>
           </p>
         ) : (
-          <p class="result-line">{pending.queued ? WAITING_FOR_SLOT : RUNNING}</p>
+          <p class="result-line">{pending.queued ? WAITING_FOR_SLOT : runningLine(check.method, check.started_at, new Date())}</p>
         )}
       </Slab>
       <div class="below">

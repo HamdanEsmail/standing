@@ -113,8 +113,26 @@ export const FORM_NOTE = "Some registers answer in seconds. Those that need a re
 export const SCREENSHOT_MISSING = "Screenshot unavailable.";
 
 // Honest states (site plan): the exact copy. <Registry> is the registry's full name, <q> the query as typed.
-export const WAITING_FOR_SLOT = "Waiting for a free browser. One register search runs at a time.";
-export const RUNNING = "Reading the register now. This page refreshes by itself.";
+export const WAITING_FOR_SLOT =
+  "Waiting for a free browser. One register search runs at a time, and each takes a minute or two. This page refreshes by itself.";
+
+/** How long ago a check was started: seconds under a minute, then whole minutes. Never negative. */
+function startedAgo(startedAt: string, now: Date): string {
+  const seconds = Math.max(0, Math.floor((now.getTime() - Date.parse(startedAt)) / 1000));
+  if (seconds < 60) return seconds === 1 ? "1 second ago" : `${seconds} seconds ago`;
+  const minutes = Math.floor(seconds / 60);
+  return minutes === 1 ? "1 minute ago" : `${minutes} minutes ago`;
+}
+
+/**
+ * What a running check says: what is happening, how long it takes, and how long it has been going.
+ * A visitor who is not told how long a real browser takes reads a working check as a stuck one.
+ */
+export function runningLine(method: string | null, startedAt: string | null, now: Date): string {
+  const takes = method === "agent" ? "In a real browser that takes a minute or two" : "That takes a few seconds";
+  const since = startedAt === null ? "" : `, and this check was started ${startedAgo(startedAt, now)}`;
+  return `Reading the register now. ${takes}${since}. This page refreshes by itself.`;
+}
 export const STILL_WAITING = "Still waiting. The register has not answered yet.";
 export const SPEND_PAUSED_LINE = `Live checks are paused: Standing has reached its spending line of $${SPEND_PAUSE_USD}. Stored results and watched records are still shown.`;
 export const AGENT_CAP_LINE = "Today's live browser checks are used. Stored results still open, and they return at 00:00 UTC.";

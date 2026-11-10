@@ -7,6 +7,7 @@ import { PUBLIC_CHECKS_PER_IP_PER_DAY } from "../src/core/limits";
 import { insertCheck } from "../src/db/checks";
 import { insertWatch } from "../src/db/watches";
 import { companiesHouse } from "../src/registries/companies-house";
+import { runningLine } from "../src/site/format";
 import chCompany from "./fixtures/registries/ch-company.md?raw";
 import fetchChSearch from "./fixtures/tinyfish/fetch-ch-search.json";
 import { callWorker } from "./helpers/app";
@@ -155,7 +156,9 @@ describe("site check flow", () => {
     mockStartRun("run-site-pending");
     const { id, html } = await check({ q: "Ada Fictitious", number: "", record_type: "doctor", place: "GB" });
     expect(callsTo("POST", RUN_ASYNC_API)).toHaveLength(1);
-    expect(textOf(html)).toContain("Reading the register now. This page refreshes by itself.");
+    expect(textOf(html)).toMatch(
+      /Reading the register now\. In a real browser that takes a minute or two, and this check was started \d+ seconds? ago\. This page refreshes by itself\./,
+    );
     expect(refreshOf(html)).toBe(`3; url=/checks/${id}?w=1`);
     expect(refreshOf(await page(`/checks/${id}?w=59`))).toBe(`3; url=/checks/${id}?w=60`);
     const stopped = await page(`/checks/${id}?w=60`);
@@ -170,8 +173,27 @@ describe("site check flow", () => {
     await env.DB.prepare("UPDATE agent_slot SET holder_check_id = 'someone-else', since = ? WHERE id = 1").bind(new Date().toISOString()).run();
     const id = await insertCheck(env.DB, { state: "pending", registry: "gmc", record_type: "doctor", jurisdiction: "GB", query_raw: "Ada Fictitious", method: "agent", trigger: "request", started_at: new Date().toISOString() });
     const html = await page(`/checks/${id}`);
-    expect(textOf(html)).toContain("Waiting for a free browser. One register search runs at a time.");
+    expect(textOf(html)).toContain(
+      "Waiting for a free browser. One register search runs at a time, and each takes a minute or two. This page refreshes by itself.",
+    );
     expect(refreshOf(html)).toBe(`3; url=/checks/${id}?w=1`);
+  });
+
+  it("a running check says how long it takes and how long ago it was started", async () => {
+    const now = new Date("2026-11-10T12:00:00.000Z");
+    const at = (secondsAgo: number) => new Date(now.getTime() - secondsAgo * 1000).toISOString();
+    expect(runningLine("agent", at(40), now)).toBe(
+      "Reading the register now. In a real browser that takes a minute or two, and this check was started 40 seconds ago. This page refreshes by itself.",
+    );
+    expect(runningLine("agent", at(1), now)).toContain("started 1 second ago.");
+    expect(runningLine("agent", at(75), now)).toContain("started 1 minute ago.");
+    expect(runningLine("agent", at(150), now)).toContain("started 2 minutes ago.");
+    expect(runningLine("fetch", at(3), now)).toBe(
+      "Reading the register now. That takes a few seconds, and this check was started 3 seconds ago. This page refreshes by itself.",
+    );
+    // A check with no start time, or a clock that disagrees, never says a negative time.
+    expect(runningLine("agent", null, now)).toBe("Reading the register now. In a real browser that takes a minute or two. This page refreshes by itself.");
+    expect(runningLine("agent", at(-30), now)).toContain("started 0 seconds ago.");
   });
 
   it("invalid input re-renders the home form with a field error, status 400", async () => {
