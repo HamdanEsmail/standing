@@ -282,3 +282,21 @@ now". A visitor who is not told how long that takes reads a working check as a s
 says that a real browser takes a minute or two and how many seconds or minutes ago the check was started,
 and a check waiting for the one browser says each search takes a minute or two and that the page
 refreshes by itself. Live as version `967f2a6a` at 12:12 UTC.
+
+## A waiting check shows that it is working, 10 November
+
+A sentence was not enough. A check that reads its register inside the request gave no sign for several
+seconds after the button was pressed, and a check in a real browser showed one word and a dot. The
+waiting page now shows the three steps (wait for a free browser, read the register, show its answer) with
+the one it is on, a bar that keeps moving, and a clock, beside the usual time. The bar has no length to
+show, because a register answers when it answers, so it only says that the check is working. A page
+that has stopped reloading shows no bar and no clock.
+
+The four sites share one small script, `public/assets/wait.js`, served from the site itself and loaded
+`defer`. Every page works without it. On a POST form it marks the form busy, swaps the button's words for
+its `data-busy` label, shows a spinner, and refuses a second press; a page brought back by the Back button
+is reset. On a waiting page it counts the clock every second between the page's own reloads. I pressed
+each live button in a real browser at phone width, with the sending stopped so nothing was started: the
+label changed, the form was busy, and it went once.
+
+Live as version `8e42df78` at 12:55 UTC.
