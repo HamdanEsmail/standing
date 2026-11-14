@@ -5,6 +5,7 @@ import { spendByKind, totalSpend } from "../core/spend";
 import { eventCounts } from "../db/events";
 import { listSharedMonitors, watchCounts } from "../db/watches";
 import type { Env } from "../env";
+import { readerChecksNow } from "../readerCheck";
 
 export const statsRouter = new Hono<{ Bindings: Env }>();
 
@@ -49,6 +50,9 @@ export async function readStats(db: D1Database) {
       monitor: callsBy.get("monitor_check") ?? 0,
       browser: callsBy.get("screenshot") ?? 0,
     },
+    // The daily reader check (src/readerCheck.ts): each known business record and its latest try.
+    // Its Fetch reads are in tinyfish_calls.fetch like every other.
+    reader_checks: await readerChecksNow(db),
   };
 }
 

@@ -53,7 +53,9 @@ It prints `Created bucket 'standing'`. "Already exists" is fine too.
 CLOUDFLARE_API_TOKEN="$CF" npm run migrate:remote
 ```
 
-It lists `0001_init.sql` with a ✅. If it asks to confirm, answer yes. If it says no migrations to apply, the database was already set up: fine.
+It lists `0001_init.sql` and `0002_reader_checks.sql` with a ✅. If it asks to confirm, answer yes. If it says no migrations to apply, the database was already set up: fine.
+
+On a build that is already live, run the same command before deploying code that adds a migration: `0002_reader_checks.sql` only adds a table, and the pages that read it fail until it is there.
 
 ## 2. First deploy, to learn the address
 
@@ -243,6 +245,7 @@ CLOUDFLARE_API_TOKEN="$CF" npx wrangler r2 object get "standing/raw/monitor/<run
 - `curl -s "$BASE/api/stats"` daily: spend, events, and `monitors` (active, failed).
 - The hourly job logs a `cron` line when something needs a look: a Monitor that is missing or not active (its watch is marked failed), or a watch with no Monitor run for more than 26 hours (runs can arrive late or not at all). Read it with `CLOUDFLARE_API_TOKEN="$CF" npx wrangler tail`.
 - A failed watch is not repaired automatically. Delete it and watch the record again (a new Monitor); never resume a paused one.
+- The reader check is in `reader_checks` at `/api/stats` and on the Coverage page. `not_understood` means a register changed its page: read that page with the adapter's own Fetch options, record it as a new fixture, and fix the reader test first. One `no_answer` is usually the register being down for a while; several days in a row, look at the register in a browser. Each register is tried once a UTC day, so a fix shows the next day.
 
 ## 10. After 17 November (optional)
 

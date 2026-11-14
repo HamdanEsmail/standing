@@ -1,6 +1,9 @@
-// The hourly job (`15 * * * *`). It never decides on its own to read a registry: it expires, purges,
+// The hourly job (`15 * * * *`). It never reads again, on its own, a record someone looked up or
+// watches: a watched record is read again only when its Monitor reports a change. It expires, purges,
 // finishes work a caller or a Monitor already started, and checks the health of Standing's own
 // monitors. Each step runs even when an earlier one fails; a failed step is named in `failed_steps`.
+// After this job the same hourly run makes the daily reader check (src/readerCheck.ts): one known
+// business record on one register, which tests Standing's own reader and is nobody's lookup.
 // Nothing here pauses, edits or resumes a Monitor (a paused and resumed Monitor cannot be relied on to
 // run again), and it never looks at a Monitor that is not in Standing's own tables. One step makes and
 // deletes a Monitor of its own: the shared NMC page has a new address each month, and the Monitor

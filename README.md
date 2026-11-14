@@ -46,6 +46,8 @@ A status is never taken from a line in a search result. It is read from the reco
 
 The same table, with each register's notes and last successful read, is at [/api/registries](https://standing.hamdanesmail12-7a9.workers.dev/api/registries).
 
+**The reader check.** Once a UTC day Standing reads one known business record on each register it reads with Fetch (GREGGS PLC on Companies House, SANTA FE FAMILY PHARMACY on the California DCA, PUBLIX ASSET MANAGEMENT COMPANY on Sunbiz) and checks that its own reader still finds the record's number, its name and a status. A register can change its pages without notice, and this is how Standing finds out before a lookup does. The result is beside each register on the [Coverage page](https://standing.hamdanesmail12-7a9.workers.dev/coverage) and in `reader_checks` at `/api/stats`. It is a check on Standing, not on anyone: it never reads again a record someone looked up or watches, and it keeps nothing as a record. GMC is not in it, because its pages are doctors' own records and Standing does not choose a person to read. NMC and SRA are not in it either: they are read only by the Agent, which costs money for each read.
+
 Registers that were tried and cannot be read are listed too, each with the reason seen: the UK FCA register, the New York Office of Professions, New York DOS corporations, Dubai DHA Sheryan, the California Contractors State License Board and the Medical Council of New Zealand. The [Coverage page](https://standing.hamdanesmail12-7a9.workers.dev/coverage) has the reasons.
 
 ## How TinyFish is used
@@ -106,7 +108,7 @@ Tests never call TinyFish. The opt-in live tests in `tests/integration/` run onl
 
 **Design first.** The design is in [docs/specs/2026-11-03-standing-design.md](docs/specs/2026-11-03-standing-design.md) and the plans are in [docs/plans/](docs/plans/). What changed while building, why, and every live TinyFish call with its cost, is in [docs/build-log.md](docs/build-log.md). The look is set in [DESIGN.md](DESIGN.md).
 
-**Tests.** On 10 Nov 2026 the suite has 653 tests: 647 pass and 6 are skipped, the opt-in live ones. `npm run check` runs in GitHub Actions on every push ([.github/workflows/check.yml](.github/workflows/check.yml)).
+**Tests.** On 14 Nov 2026 the suite has 665 tests: 658 pass and 7 are skipped, the opt-in live ones. `npm run check` runs in GitHub Actions on every push ([.github/workflows/check.yml](.github/workflows/check.yml)).
 
 **Found live, then fixed.** Reading real registers turned up cases no fixture had. A search that never ran used to read as "no match" and now reads as a failed check. A register that returns its nearest names for a name that does not exist used to read as ambiguous and now reads as no match. Companies House's "Active — Active proposal to strike off" is kept as Active with a flag, not flattened. Each is in the build log with the check that showed it.
 

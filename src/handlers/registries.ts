@@ -1,6 +1,7 @@
 // GET /api/registries (spec section 6): the coverage table as data. Public, no token, no TinyFish call.
 import { Hono } from "hono";
 import type { Env } from "../env";
+import { readerChecksNow } from "../readerCheck";
 import { listAdapters, UNSUPPORTED } from "../registries/index";
 
 export const registriesRouter = new Hono<{ Bindings: Env }>();
@@ -8,10 +9,13 @@ export const registriesRouter = new Hono<{ Bindings: Env }>();
 /**
  * Each supported registry with how it is looked up and watched (the adapter's `coverage`), and
  * `last_success_at`: the latest `checked_at` of a finished check that read the register and got an
- * answer (match, ambiguous or no_match; errors and unsupported do not count), or null. Then the
- * registries checked and found unreadable, with the reason.
+ * answer (match, ambiguous or no_match; errors and unsupported do not count), or null; and
+ * `reader_check`: the daily reader check's known record on that register with its latest try (null
+ * fields until it is tried), or null for a register that is not in the check. Then the registries
+ * checked and found unreadable, with the reason.
  */
 export async function readCoverage(db: D1Database) {
+  const readers = await readerChecksNow(db);
   const { results } = await db.prepare(
     `SELECT registry, MAX(checked_at) AS last_success_at FROM checks
      WHERE state = 'done' AND outcome IN ('match', 'ambiguous', 'no_match') AND checked_at IS NOT NULL
@@ -28,6 +32,7 @@ export async function readCoverage(db: D1Database) {
       watch: a.coverage.watch,
       supported: true,
       last_success_at: last.get(a.id) ?? null,
+      reader_check: readers.find((r) => r.registry === a.id) ?? null,
       notes: a.coverage.notes,
     })),
     unsupported: UNSUPPORTED,

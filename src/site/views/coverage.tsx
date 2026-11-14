@@ -36,6 +36,33 @@ const PLAIN_NOTES: Record<string, string> = {
   "fl-sunbiz": "Florida companies, looked up by name. A former name is listed but never matched.",
 };
 
+type Registry = Coverage["registries"][number];
+
+/** Why a register has no known record in the daily reader check. */
+const NOT_IN_CHECK: Record<string, string> = {
+  gmc: "Not in the reader check: its pages are doctors' own records, and Standing does not choose a person to read.",
+  nmc: "Not in the reader check: it is read only by the Agent, which costs money for each read.",
+  sra: "Not in the reader check: it is read only by the Agent, which costs money for each read.",
+};
+
+/** The panel's reader-check line, and whether the reader did not get its record. */
+function readerLine(r: Registry): { text: string; off: boolean } | null {
+  const c = r.reader_check;
+  if (c === null) return NOT_IN_CHECK[r.id] === undefined ? null : { text: NOT_IN_CHECK[r.id]!, off: false };
+  if (c.outcome === null || c.started_at === null) return { text: `Reader check: ${c.record}, not run yet.`, off: false };
+  const when = formatUtc(c.started_at);
+  switch (c.outcome) {
+    case "understood":
+      return { text: `Reader check: ${c.record} read and understood, ${when}.`, off: false };
+    case "no_answer":
+      return { text: `Reader check: ${c.record}: the register did not answer (${c.detail ?? "no answer"}), ${when}.`, off: true };
+    case "not_understood":
+      return { text: `Reader check: ${c.record} was read, but ${c.detail ?? "it was not understood"}, ${when}.`, off: true };
+    case "started":
+      return { text: `Reader check: ${c.record}, started ${when} and did not finish.`, off: true };
+  }
+}
+
 export function CoveragePage(props: { stats: Stats; paused: boolean; coverage: Coverage }) {
   const { registries, unsupported } = props.coverage;
   return (
@@ -72,9 +99,23 @@ export function CoveragePage(props: { stats: Stats; paused: boolean; coverage: C
             </dl>
             <p class="note">{PLAIN_NOTES[r.id] ?? r.notes}</p>
             {r.last_success_at ? <p class="last">Last answered {formatUtc(r.last_success_at)}</p> : null}
+            {(() => {
+              const line = readerLine(r);
+              return line === null ? null : <p class={line.off ? "reader off" : "reader"}>{line.text}</p>;
+            })()}
           </li>
         ))}
       </ul>
+
+      <section class="band-tight">
+        <h2>The reader check</h2>
+        <p class="sub">
+          Once a UTC day Standing reads one known business record on each register it reads with Fetch, and checks that its own reader still finds the
+          record's number, its name and a status. A register can change its pages without notice; this is how Standing finds out before a lookup does. It
+          is a check on Standing, not on anyone: it never reads again a record someone looked up or watches (only a TinyFish Monitor's report does), and it
+          keeps nothing as a record.
+        </p>
+      </section>
 
       <section class="band-tight">
         <h2>Tried, and cannot be read</h2>

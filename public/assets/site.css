@@ -640,6 +640,10 @@ footer .meter .num { font-family: var(--num); font-variant-numeric: tabular-nums
 .reg-panel dd { margin: 6px 0 0; font: 500 15.5px/1.35 var(--body); }
 .reg-panel .note { margin-top: 18px; font-size: 15px; line-height: 1.45; color: var(--ink-2); }
 .reg-panel .last { margin-top: auto; padding-top: 18px; font: 400 12.5px/1.3 var(--num); color: var(--ink-3); }
+/* The daily reader check: at the foot of the panel, under "Last answered" when there is one; amber when the reader did not get its record. */
+.reg-panel .reader { margin-top: auto; padding-top: 18px; font: 400 12.5px/1.4 var(--num); color: var(--ink-3); }
+.reg-panel .last + .reader { margin-top: 0; padding-top: 6px; }
+.reg-panel .reader.off { color: var(--wait); }
 .cannot { list-style: none; margin: 26px 0 0; padding: 0; }
 .cannot li { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 2fr) 120px minmax(0, 6fr); gap: 8px 24px; align-items: baseline; padding: 20px 0; border-top: var(--hairline); }
 .cannot h3 { font: 700 22px/1.1 var(--display); letter-spacing: -.03em; color: var(--ink-2); }

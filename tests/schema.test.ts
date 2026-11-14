@@ -18,9 +18,9 @@ async function columns(table: string): Promise<string[]> {
 }
 
 describe("schema", () => {
-  it("creates the nine tables and the five indexes", async () => {
+  it("creates the ten tables and the five indexes", async () => {
     expect(await names("table")).toEqual(
-      ["agent_slot", "candidates", "checks", "events", "monitors_shared", "public_use", "records", "spend", "watches"],
+      ["agent_slot", "candidates", "checks", "events", "monitors_shared", "public_use", "reader_checks", "records", "spend", "watches"],
     );
     expect(await names("index")).toEqual([
       "idx_checks_cache_key_checked",

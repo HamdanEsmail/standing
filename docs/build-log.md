@@ -272,6 +272,7 @@ What changed from the plan (`docs/plans/2026-11-03-standing-core.md`) while buil
 | 2026-11-09 10:15-10:20 | Five TinyBrowser sessions from a local script, to find why the banner was not declined (outside the Worker's ledger) | The click works in TinyBrowser; the script sent from the Worker had lost a backslash | about $0.010 |
 | 2026-11-09 10:26 | A real browser check through the preview's form: GMC by name, a made-up doctor (Agent) | no_match after 13 steps; the pending page refreshed itself 38 times and stopped on the result | $0.208 |
 | 2026-11-10 07:34 | One public check from the live site, timed for the demo video: Companies House SC702856 by number (Fetch record page + screenshot) | Dissolved, with its screenshot. The result page arrived 17.7 s after the press: Fetch was back at 1.2 s, the Browser session was open at 2.1 s and the photograph was stored by 17.0 s. The ledger's Browser row is written when the session opens, so it does not show how long the photograph takes | $0.002 |
+| 2026-11-14 16:4x | The reader check's opt-in live test, before it was deployed: Companies House 00502851, DCA pharmacy 59020, Sunbiz search and P01000027088 (four TinyFetch reads, from the test runner) | All three understood: Active, CLEAR, ACTIVE, in 10.9 s | $0 |
 
 Total so far: about $2.66 (deploy day and the site work; everything before 9 Nov was free)
 
@@ -300,3 +301,26 @@ each live button in a real browser at phone width, with the sending stopped so n
 label changed, the form was busy, and it went once.
 
 Live as version `8e42df78` at 12:55 UTC.
+
+## A daily check of Standing's own readers, 14 November
+
+A register can change its pages without notice, and a reader that no longer understands a page would
+only show it when someone's lookup failed. So once a UTC day the hourly run now reads one known business
+record on each register Standing reads with Fetch: GREGGS PLC (00502851) on Companies House, SANTA FE
+FAMILY PHARMACY (licence 59020) on the California DCA, and PUBLIX ASSET MANAGEMENT COMPANY (P01000027088)
+on Sunbiz, which is read the way a lookup reads it, through the name search and the row's own page. It
+looks for the record's number, its name and a status, and writes one of three answers: understood, the
+register did not answer (with Fetch's own code), or read but not understood (with what was missing). The
+answer is beside each register on the Coverage page and in `reader_checks` at `/api/stats`.
+
+The design said "The Worker has no cron that reads registries", and I changed that sentence rather than
+work around it. What it protects still holds: no timer reads again a record someone looked up or watches,
+and only a Monitor's report does. The check has its own table (`0002_reader_checks.sql`) and writes
+nothing to checks, records, events or watches, and no evidence; a test pins that. Each run reads at most
+one register, after the hourly job's own work, and a register is tried once a day whatever happens: its
+row is written before the page is read, so a run that dies leaves it marked "started" and nothing tries
+it again that day. A register retried every hour would be a polling loop.
+
+The three records are businesses. GMC is left out: its pages are doctors' own records, and Standing does
+not choose a person to read (spec section 7). NMC and SRA are read only by the Agent, which costs money
+for each read. Each Fetch read is in the spend ledger at $0, like every other.
