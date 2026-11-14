@@ -112,8 +112,8 @@ export function CoveragePage(props: { stats: Stats; paused: boolean; coverage: C
         <p class="sub">
           Once a UTC day Standing reads one known business record on each register it reads with Fetch, and checks that its own reader still finds the
           record's number, its name and a status. A register can change its pages without notice; this is how Standing finds out before a lookup does. It
-          is a check on Standing, not on anyone: it never reads again a record someone looked up or watches (only a TinyFish Monitor's report does), and it
-          keeps nothing as a record.
+          is a check on Standing, not on anyone: it changes no record, raises no event and touches no watch, and it keeps nothing it reads. A watched record
+          is checked again only when its TinyFish Monitor reports a change.
         </p>
       </section>
 

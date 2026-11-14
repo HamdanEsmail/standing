@@ -272,7 +272,7 @@ What changed from the plan (`docs/plans/2026-11-03-standing-core.md`) while buil
 | 2026-11-09 10:15-10:20 | Five TinyBrowser sessions from a local script, to find why the banner was not declined (outside the Worker's ledger) | The click works in TinyBrowser; the script sent from the Worker had lost a backslash | about $0.010 |
 | 2026-11-09 10:26 | A real browser check through the preview's form: GMC by name, a made-up doctor (Agent) | no_match after 13 steps; the pending page refreshed itself 38 times and stopped on the result | $0.208 |
 | 2026-11-10 07:34 | One public check from the live site, timed for the demo video: Companies House SC702856 by number (Fetch record page + screenshot) | Dissolved, with its screenshot. The result page arrived 17.7 s after the press: Fetch was back at 1.2 s, the Browser session was open at 2.1 s and the photograph was stored by 17.0 s. The ledger's Browser row is written when the session opens, so it does not show how long the photograph takes | $0.002 |
-| 2026-11-14 16:4x | The reader check's opt-in live test, before it was deployed: Companies House 00502851, DCA pharmacy 59020, Sunbiz search and P01000027088 (four TinyFetch reads, from the test runner) | All three understood: Active, CLEAR, ACTIVE, in 10.9 s | $0 |
+| 2026-11-14 12:1x | The reader check's opt-in live test, before it was deployed: Companies House 00502851, DCA pharmacy 59020, Sunbiz search and P01000027088 (four TinyFetch reads, from the test runner) | All three understood: Active, CLEAR, ACTIVE, in 10.9 s | $0 |
 
 Total so far: about $2.66 (deploy day and the site work; everything before 9 Nov was free)
 
@@ -314,8 +314,9 @@ register did not answer (with Fetch's own code), or read but not understood (wit
 answer is beside each register on the Coverage page and in `reader_checks` at `/api/stats`.
 
 The design said "The Worker has no cron that reads registries", and I changed that sentence rather than
-work around it. What it protects still holds: no timer reads again a record someone looked up or watches,
-and only a Monitor's report does. The check has its own table (`0002_reader_checks.sql`) and writes
+work around it. What it protects still holds: no timer re-checks a record. A stored record changes, and an
+event is raised, only on a request or a Monitor's report. GREGGS PLC is also one of the site's example
+lookups; the check reads its page and changes nothing about it. The check has its own table (`0002_reader_checks.sql`) and writes
 nothing to checks, records, events or watches, and no evidence; a test pins that. Each run reads at most
 one register, after the hourly job's own work, and a register is tried once a day whatever happens: its
 row is written before the page is read, so a run that dies leaves it marked "started" and nothing tries

@@ -156,7 +156,8 @@ describe("the daily reader check", () => {
     expect(text).toContain("Reader check: PUBLIX ASSET MANAGEMENT COMPANY (P01000027088), not run yet");
     expect(text).toContain("Not in the reader check: its pages are doctors' own records");
     expect(text).toContain("Not in the reader check: it is read only by the Agent");
-    expect(text).toContain("never reads again a record someone looked up or watches");
+    expect(text).toContain("it changes no record, raises no event and touches no watch");
+    expect(text).not.toContain("never reads again");
   });
 
   it("runs at the end of the hourly job, after the job's own work", async () => {

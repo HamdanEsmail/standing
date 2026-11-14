@@ -3,9 +3,11 @@
 // looks for them. A register changes its pages without notice; this is how Standing finds out that
 // its reader no longer understands one, before a lookup does.
 //
-// It is a check on Standing, not on anyone. It never reads again a record someone looked up or
-// watches (a watched record is read again only when its TinyFish Monitor reports a change), it
-// writes nothing to checks, records, events or watches, and it stores no evidence. The three records
+// It is a check on Standing, not on anyone. It changes no record, raises no event and touches no
+// watch: it writes nothing to checks, records, events or watches, and it stores no evidence. A
+// known record can also be one people look up (Greggs is one of the site's examples); the check
+// still changes nothing about it, and a watched record is checked again only when its TinyFish
+// Monitor reports a change. The three records
 // are businesses: GMC's pages are doctors' own records and Standing does not choose a person to read,
 // and NMC and SRA are read only by the Agent, which costs money for each read.
 //
